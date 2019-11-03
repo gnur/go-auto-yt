@@ -38,6 +38,7 @@ func HandleCheckChannel(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleAddChannel(w http.ResponseWriter, r *http.Request) {
+	http.Redirect(w, r, "http://localhost:8080/", http.StatusSeeOther)
 	channelURL := r.FormValue("channelURL")
 	downloadMode := r.FormValue("mode")
 	UpdateChannelsDatabase(channelURL)
@@ -58,6 +59,4 @@ func HandleAddChannel(w http.ResponseWriter, r *http.Request) {
 			DownloadVideo(videoId)
 		}
 	}
-
-	http.Redirect(w, r, "http://localhost:8080/", http.StatusSeeOther)
 }
