@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func GetLatestVideo(channelName, channelType string) (string, string) {
+func GetLatestVideo(channelName, channelType string) string {
 	if channelType == "user" {
 		uploadsId := getUserUploadsID(channelName)
 		requestURL := API_ENDPOINT_PLAYLIST + uploadsId + "&maxResults=2" + "&key=" + API_KEY
@@ -30,7 +30,7 @@ func GetLatestVideo(channelName, channelType string) (string, string) {
 
 		json.Unmarshal([]byte(string(body)), &video)
 
-		return video.Items[0].Snippet.ResourceID.VideoID, video.Items[0].Snippet.Title
+		return video.Items[0].Snippet.ResourceID.VideoID
 	}
 	requestURL := API_ENDPOINT_ID + channelName + "&" + MAX_RESULTS + "&" + ORDER_BY + "&" + TYPE + "&key=" + API_KEY
 
@@ -52,7 +52,7 @@ func GetLatestVideo(channelName, channelType string) (string, string) {
 
 	json.Unmarshal([]byte(string(body)), &video)
 
-	return video.Items[0].ID.VideoID, video.Items[0].Snippet.Title
+	return video.Items[0].ID.VideoID
 }
 
 // func GetChannelVideoData(channelId string) (string, string) {

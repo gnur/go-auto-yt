@@ -7,55 +7,18 @@ import (
 	"log"
 	"os"
 
-	"github.com/knadh/go-get-youtube/youtube"
+	"github.com/rylio/ytdl"
 )
 
-func DownloadVideoAndAudio(videoID, videoTitle string) {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-
-	video, err := youtube.Get(videoID)
+func DownloadVideo(videoID string) {
+	vid, err := ytdl.GetVideoInfo("https://www.youtube.com/watch?v=" + videoID)
 	if err != nil {
-		log.Panic(err)
+		fmt.Println("Failed to get video info")
+		return
 	}
-
-	option := &youtube.Option{
-		Rename: false,
-		Resume: true,
-		Mp3:    false,
-	}
-	video.Download(0, videoTitle+".mp4", option)
-}
-
-func DownloadAudio(videoID, videoTitle string) {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	video, err := youtube.Get(videoID)
-	if err != nil {
-		log.Panic("asdadasd", err)
-	}
-
-	option := &youtube.Option{
-		Rename: false,
-		Resume: true,
-		Mp3:    true,
-	}
-	video.Download(0, videoTitle+".mp4", option)
-	fmt.Println("Removing mp4...")
-	os.Remove(videoTitle + ".mp4")
-}
-
-func DownloadVideo(videoID, videoTitle string) {
-	log.SetFlags(log.LstdFlags | log.Lshortfile)
-	video, err := youtube.Get(videoID)
-	if err != nil {
-		log.Panic(err)
-	}
-
-	option := &youtube.Option{
-		Rename: false,
-		Resume: true,
-		Mp3:    false,
-	}
-	video.Download(0, videoTitle+".mp4", option)
+	file, _ := os.Create(vid.Title + ".mp4")
+	defer file.Close()
+	vid.Download(vid.Formats[0], file)
 }
 
 func UpdateChannelsDatabase(channelURL string) {

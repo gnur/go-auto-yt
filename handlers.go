@@ -47,24 +47,15 @@ func HandleAddChannel(w http.ResponseWriter, r *http.Request) {
 
 	if channelType == "user" {
 		fmt.Println("USER")
-		videoId, videoTitle := GetLatestVideo(channelName, channelType)
-		if downloadMode == "Audio Only" {
-			DownloadAudio(videoId, videoTitle)
-		} else if downloadMode == "Video Only" {
-			DownloadVideo(videoId, videoTitle)
-		} else if downloadMode == "Video And Audio" {
-			DownloadVideo(videoId, videoTitle)
+		videoId := GetLatestVideo(channelName, channelType)
+		if downloadMode == "Video And Audio" {
+			DownloadVideo(videoId)
 		}
 	} else if channelType == "channel" {
 		fmt.Println("CHANNEL")
-		videoId, videoTitle := GetLatestVideo(channelName, channelType)
-		fmt.Println(videoId, videoTitle)
-		if downloadMode == "Audio Only" {
-			DownloadAudio(videoId, videoTitle)
-		} else if downloadMode == "Video Only" {
-			DownloadVideo(videoId, videoTitle)
-		} else if downloadMode == "Video And Audio" {
-			DownloadVideo(videoId, videoTitle)
+		videoId := GetLatestVideo(channelName, channelType)
+		if downloadMode == "Video And Audio" {
+			DownloadVideo(videoId)
 		}
 	}
 
